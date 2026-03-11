@@ -1,0 +1,48 @@
+# ─── Flutter / Dart ──────────────────────────────────────────────
+# Build output (the 1.3 GB you want to skip)
+cat_spotter/build/
+
+# Dart tool cache
+cat_spotter/.dart_tool/
+cat_spotter/.flutter-plugins
+cat_spotter/.flutter-plugins-dependencies
+cat_spotter/.pub-cache/
+cat_spotter/.pub/
+
+# Generated files
+cat_spotter/**/*.g.dart
+cat_spotter/**/*.freezed.dart
+
+# ─── Android ─────────────────────────────────────────────────────
+# Gradle build output
+cat_spotter/android/.gradle/
+cat_spotter/android/app/build/
+cat_spotter/android/build/
+
+# Machine-local SDK paths (contains your PC's local paths)
+cat_spotter/android/local.properties
+
+# Key store secrets — never commit these
+*.jks
+*.keystore
+key.properties
+
+# ─── IDE / Editor ────────────────────────────────────────────────
+.idea/
+*.iml
+.vscode/
+*.suo
+*.user
+
+# ─── OS ──────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ─── Claude Code ─────────────────────────────────────────────────
+# Local Claude Code settings (machine-specific, not project config)
+.claude/
+
+# Exclude the project-level instructions file if you prefer privacy
+# (remove the '#' below to ignore it)
+# CLAUDE.md
