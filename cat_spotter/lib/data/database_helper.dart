@@ -3,7 +3,7 @@ import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
   static const String _dbName = 'cat_spotter.db';
-  static const int _dbVersion = 2;
+  static const int _dbVersion = 3;
 
   static Database? _database;
 
@@ -35,6 +35,20 @@ class DatabaseHelper {
         'ALTER TABLE cat_profiles ADD COLUMN color INTEGER NOT NULL DEFAULT 4294937666',
       );
     }
+    if (oldVersion < 3) {
+      await _createAchievementsTable(db);
+    }
+  }
+
+  // v3: unlocked achievements. Progress is derived from sightings; only the
+  // unlock moment is stored so popups fire once and dates survive deletions.
+  static Future<void> _createAchievementsTable(Database db) async {
+    await db.execute('''
+      CREATE TABLE achievements (
+        id          TEXT PRIMARY KEY,
+        unlocked_at TEXT NOT NULL
+      )
+    ''');
   }
 
   static Future<void> _onCreate(Database db, int version) async {
@@ -73,5 +87,7 @@ class DatabaseHelper {
     await db.execute(
       'CREATE INDEX idx_sightings_time ON cat_sightings(captured_at DESC)',
     );
+
+    await _createAchievementsTable(db);
   }
 }

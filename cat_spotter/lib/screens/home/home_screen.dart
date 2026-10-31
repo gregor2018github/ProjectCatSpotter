@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/theme.dart';
 import '../../models/cat_profile.dart';
+import '../../providers/achievements_provider.dart';
 import '../../providers/cat_profiles_provider.dart';
 import '../../widgets/confirmation_dialog.dart';
 import '../../widgets/error_display.dart';
 import '../../widgets/loading_indicator.dart';
+import '../achievements/achievements_screen.dart';
 import '../add_sighting/add_sighting_screen.dart';
 import '../all_cats_map/all_cats_map_screen.dart';
 import '../cat_detail/cat_detail_screen.dart';
@@ -29,6 +31,11 @@ class HomeScreen extends ConsumerWidget {
           ],
         ),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.emoji_events_outlined),
+            tooltip: 'Trophies',
+            onPressed: () => _openAchievements(context),
+          ),
           IconButton(
             icon: const Icon(Icons.map_outlined),
             tooltip: 'All cats map',
@@ -95,13 +102,20 @@ class HomeScreen extends ConsumerWidget {
         SliverPadding(
           padding: const EdgeInsets.fromLTRB(20, 4, 20, 12),
           sliver: SliverToBoxAdapter(
-            child: Text(
-              '${profiles.length} cat${profiles.length == 1 ? '' : 's'} · '
-              '$totalSightings sighting${totalSightings == 1 ? '' : 's'}',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
-                    fontWeight: FontWeight.w600,
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    '${profiles.length} cat${profiles.length == 1 ? '' : 's'} · '
+                    '$totalSightings sighting${totalSightings == 1 ? '' : 's'}',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AppColors.textSecondary,
+                          fontWeight: FontWeight.w600,
+                        ),
                   ),
+                ),
+                _streakBadge(context, ref),
+              ],
             ),
           ),
         ),
@@ -128,6 +142,49 @@ class HomeScreen extends ConsumerWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _streakBadge(BuildContext context, WidgetRef ref) {
+    final streak =
+        ref.watch(achievementsProvider).valueOrNull?.stats.currentStreak ?? 0;
+    final active = streak > 0;
+    return Material(
+      color: active ? AppColors.accentLight : AppColors.surface,
+      borderRadius: BorderRadius.circular(20),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(20),
+        onTap: () => _openAchievements(context),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.local_fire_department,
+                size: 16,
+                color: active ? AppColors.accent : AppColors.textSecondary,
+              ),
+              const SizedBox(width: 4),
+              Text(
+                active ? '$streak-day streak' : 'No streak',
+                style: TextStyle(
+                  color: active ? AppColors.accent : AppColors.textSecondary,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _openAchievements(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const AchievementsScreen()),
     );
   }
 

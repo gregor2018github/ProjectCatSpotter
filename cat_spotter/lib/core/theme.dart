@@ -20,6 +20,11 @@ class AppColors {
   static const Color divider = Color(0xFFDDD0BD);
   static const Color error = Color(0xFFA33A2C);
   static const Color success = forest;
+
+  // Achievement tiers, muted to fit the earth-tone palette.
+  static const Color bronze = Color(0xFF9C5B2E);
+  static const Color silver = Color(0xFF6F7C80);
+  static const Color gold = Color(0xFFB8862F);
 }
 
 class AppTheme {

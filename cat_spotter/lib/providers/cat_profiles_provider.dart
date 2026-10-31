@@ -3,6 +3,7 @@ import '../data/cat_profile_dao.dart';
 import '../data/cat_sighting_dao.dart';
 import '../models/cat_profile.dart';
 import '../services/image_storage_service.dart';
+import 'cat_sightings_provider.dart';
 
 class CatProfilesNotifier extends AsyncNotifier<List<CatProfile>> {
   @override
@@ -34,6 +35,7 @@ class CatProfilesNotifier extends AsyncNotifier<List<CatProfile>> {
       await ImageStorageService.deleteImage(coverImagePath);
     }
 
+    ref.invalidate(allCatSightingsProvider);
     ref.invalidateSelf();
   }
 }
