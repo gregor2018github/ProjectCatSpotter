@@ -19,7 +19,9 @@ class _Step1CameraState extends ConsumerState<Step1Camera> {
   void initState() {
     super.initState();
     // Start GPS acquisition immediately so it's ready by step 3.
-    _startGps();
+    // Deferred: Riverpod forbids modifying providers during initState, and the
+    // resulting exception would abort _startGps before GPS is ever requested.
+    Future.microtask(_startGps);
   }
 
   Future<void> _startGps() async {
