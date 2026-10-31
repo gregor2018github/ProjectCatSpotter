@@ -16,11 +16,13 @@ A Flutter Android app for spotting and tracking cats by location. Users photogra
 - **uuid ^4.5.1**, **intl ^0.20.1**, **path_provider ^2.1.4**, **permission_handler ^11.4.0**
 
 ## Design System
-- Background: `#FFF8F0`
-- Accent: `#FF8C42`
-- Text: `#3D2B1F`
-- Font: Nunito (via google_fonts)
+"Forest & clay" earth-tone palette (no bright orange):
+- Background: `#F6F0E6` (parchment); surface `#EDE3D3`
+- Primary accent: `#7B2D26` (oxblood); secondary `#3F5A43` (forest green); tertiary `#6B4F3A` (walnut)
+- Text: `#2B1D14` (espresso)
+- Fonts: Lora (serif) for headings via `AppTheme.display()`; Nunito for body text (both via google_fonts)
 - Theme defined in `lib/core/theme.dart`; constants in `lib/core/constants.dart`
+- Default cat marker colour: `CatProfile.defaultColor` (oxblood); presets in `cat_form_screen.dart`
 
 ## Architecture
 

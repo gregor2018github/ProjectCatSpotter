@@ -47,18 +47,18 @@ class _CatFormScreenState extends ConsumerState<CatFormScreen> {
   bool _saving = false;
 
   static const List<int> _presetColors = [
-    0xFFE53935, // Red
-    0xFFD81B60, // Pink
-    0xFF8E24AA, // Purple
-    0xFF3949AB, // Indigo
-    0xFF1E88E5, // Blue
-    0xFF00ACC1, // Cyan
-    0xFF00897B, // Teal
-    0xFF43A047, // Green
-    0xFFFFB300, // Amber
-    0xFFFF8C42, // Orange (default accent)
-    0xFFE64A19, // Deep Orange
-    0xFF6D4C41, // Brown
+    0xFF7B2D26, // Oxblood (default accent)
+    0xFFA0442C, // Brick
+    0xFFB5652B, // Rust
+    0xFFC08A3E, // Ochre
+    0xFF8C7A3D, // Olive
+    0xFF5E7348, // Moss
+    0xFF3F5A43, // Forest
+    0xFF2F4F4F, // Slate green
+    0xFF4A5D73, // Dusk blue
+    0xFF6B4F6B, // Plum
+    0xFF6B4F3A, // Walnut
+    0xFF3B2A20, // Espresso
   ];
 
   bool get _isEdit => widget.existing != null;

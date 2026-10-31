@@ -21,52 +21,89 @@ class CatProfileCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: onTap,
-        onLongPress: () => _showOptions(context),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              flex: 3,
-              child: LocalImage(
-                relativePath: profile.coverImagePath,
-                fit: BoxFit.cover,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          LocalImage(
+            relativePath: profile.coverImagePath,
+            fit: BoxFit.cover,
+          ),
+          // Bottom scrim so the name stays legible over any photo.
+          const DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                stops: [0.45, 1.0],
+                colors: [Colors.transparent, Color(0xD92B1D14)],
               ),
             ),
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      profile.name,
-                      style: Theme.of(context).textTheme.titleMedium,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 2),
-                    Row(
-                      children: [
-                        const Icon(Icons.place,
-                            size: 13, color: AppColors.accent),
-                        const SizedBox(width: 3),
-                        Text(
-                          '${profile.sightingCount} sighting${profile.sightingCount == 1 ? '' : 's'}',
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                      ],
-                    ),
-                  ],
+          ),
+          Positioned(
+            left: 12,
+            right: 12,
+            bottom: 12,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  profile.name,
+                  style: AppTheme.display(
+                    fontSize: 19,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ),
+                const SizedBox(height: 6),
+                _sightingChip(),
+              ],
             ),
-          ],
-        ),
+          ),
+          Material(
+            type: MaterialType.transparency,
+            child: InkWell(
+              onTap: onTap,
+              onLongPress: () => _showOptions(context),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _sightingChip() {
+    final count = profile.sightingCount;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.18),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 8,
+            height: 8,
+            decoration: BoxDecoration(
+              color: Color(profile.color),
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.white, width: 1),
+            ),
+          ),
+          const SizedBox(width: 6),
+          Text(
+            '$count sighting${count == 1 ? '' : 's'}',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
       ),
     );
   }

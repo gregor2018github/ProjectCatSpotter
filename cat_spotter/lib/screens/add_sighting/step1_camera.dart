@@ -131,7 +131,7 @@ class _Step1CameraState extends ConsumerState<Step1Camera> {
                   strokeWidth: 2, color: AppColors.accent),
             )
           else if (state.gpsPosition != null)
-            const Icon(Icons.gps_fixed, color: Colors.green, size: 16)
+            const Icon(Icons.gps_fixed, color: AppColors.success, size: 16)
           else
             const Icon(Icons.gps_off, color: AppColors.error, size: 16),
           const SizedBox(width: 10),

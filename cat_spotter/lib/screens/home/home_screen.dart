@@ -23,8 +23,8 @@ class HomeScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Row(
           children: [
-            Icon(Icons.pets, color: AppColors.accent),
-            SizedBox(width: 8),
+            Icon(Icons.pets, color: AppColors.accent, size: 22),
+            SizedBox(width: 10),
             Text('Cat Spotter'),
           ],
         ),
@@ -49,10 +49,11 @@ class HomeScreen extends ConsumerWidget {
         error: (e, _) =>
             ErrorDisplay(message: e.toString(), onRetry: () => ref.invalidate(catProfilesProvider)),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _openAddSighting(context),
         tooltip: 'Add sighting',
-        child: const Icon(Icons.camera_alt),
+        icon: const Icon(Icons.camera_alt_outlined),
+        label: const Text('Spot a cat'),
       ),
     );
   }
@@ -87,24 +88,46 @@ class HomeScreen extends ConsumerWidget {
 
   Widget _grid(
       BuildContext context, WidgetRef ref, List<CatProfile> profiles) {
-    return GridView.builder(
-      padding: const EdgeInsets.all(16),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
-        childAspectRatio: 0.78,
-      ),
-      itemCount: profiles.length,
-      itemBuilder: (context, index) {
-        final profile = profiles[index];
-        return CatProfileCard(
-          profile: profile,
-          onTap: () => _openDetail(context, profile),
-          onEdit: () => _openEditCat(context, profile),
-          onDelete: () => _confirmDelete(context, ref, profile),
-        );
-      },
+    final totalSightings =
+        profiles.fold<int>(0, (sum, p) => sum + p.sightingCount);
+    return CustomScrollView(
+      slivers: [
+        SliverPadding(
+          padding: const EdgeInsets.fromLTRB(20, 4, 20, 12),
+          sliver: SliverToBoxAdapter(
+            child: Text(
+              '${profiles.length} cat${profiles.length == 1 ? '' : 's'} · '
+              '$totalSightings sighting${totalSightings == 1 ? '' : 's'}',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.textSecondary,
+                    fontWeight: FontWeight.w600,
+                  ),
+            ),
+          ),
+        ),
+        SliverPadding(
+          // Bottom padding keeps the last row clear of the FAB.
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 96),
+          sliver: SliverGrid.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 14,
+              mainAxisSpacing: 14,
+              childAspectRatio: 0.8,
+            ),
+            itemCount: profiles.length,
+            itemBuilder: (context, index) {
+              final profile = profiles[index];
+              return CatProfileCard(
+                profile: profile,
+                onTap: () => _openDetail(context, profile),
+                onEdit: () => _openEditCat(context, profile),
+                onDelete: () => _confirmDelete(context, ref, profile),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 

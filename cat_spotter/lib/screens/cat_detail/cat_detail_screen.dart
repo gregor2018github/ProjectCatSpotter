@@ -152,7 +152,7 @@ class CatDetailScreen extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Sighting Map',
-                      style: Theme.of(context).textTheme.titleMedium),
+                      style: Theme.of(context).textTheme.titleLarge),
                   const SizedBox(height: 10),
                   MiniMapWidget(
                     sightings: sightings,
@@ -178,7 +178,7 @@ class CatDetailScreen extends ConsumerWidget {
               padding: const EdgeInsets.fromLTRB(20, 24, 20, 10),
               child: Text(
                 'Photos',
-                style: Theme.of(context).textTheme.titleMedium,
+                style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
           ),

@@ -10,7 +10,7 @@ class CatProfile {
   final String? notes;
 
   /// ARGB int used to colour this cat's map markers.
-  /// Defaults to the app accent colour (0xFFFF8C42).
+  /// Defaults to the app accent colour (oxblood, 0xFF7B2D26).
   final int color;
 
   final DateTime createdAt;
@@ -19,7 +19,7 @@ class CatProfile {
   /// Populated via COUNT JOIN — not stored in this table.
   final int sightingCount;
 
-  static const int defaultColor = 0xFFFF8C42;
+  static const int defaultColor = 0xFF7B2D26;
 
   CatProfile({
     String? id,
