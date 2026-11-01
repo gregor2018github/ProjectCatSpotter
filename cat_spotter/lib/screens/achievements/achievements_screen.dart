@@ -395,7 +395,7 @@ class _AchievementTile extends StatelessWidget {
     );
   }
 
-  // Distances show one decimal; counts are whole numbers.
+  // Short distances show one decimal; counts and long distances are whole.
   static String _fmt(double v, Achievement a) =>
-      a.unit.isEmpty ? v.toInt().toString() : v.toStringAsFixed(1);
+      a.unit.isEmpty || v >= 10 ? v.toInt().toString() : v.toStringAsFixed(1);
 }
