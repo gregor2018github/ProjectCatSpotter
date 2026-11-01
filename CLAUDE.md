@@ -120,5 +120,5 @@ flutter run          # requires Android device with USB debugging enabled
 
 ## Known Limitations / Future Work
 - No offline tile caching (would need `flutter_map_tile_caching`)
-- No custom app icon (would need `flutter_launcher_icons`)
+- App icon: hand-written adaptive vector icon (paw) in `android/app/src/main/res/` (`drawable/ic_launcher_foreground.xml`, `mipmap-anydpi*/`), not `flutter_launcher_icons`
 - Distribution map marker tap relies on `GestureDetector` inside `Marker` child
