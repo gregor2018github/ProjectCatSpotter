@@ -6,3 +6,7 @@ import 'package:path_provider/path_provider.dart';
 final appDocsDirProvider = FutureProvider<Directory>((ref) async {
   return getApplicationDocumentsDirectory();
 });
+
+/// False while the launch intro animation is on screen. Achievement popups
+/// wait for this so they don't appear hidden behind the intro.
+final introFinishedProvider = StateProvider<bool>((ref) => false);

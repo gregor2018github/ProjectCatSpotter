@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/theme.dart';
 import 'screens/home/home_screen.dart';
 import 'widgets/achievement_popup.dart';
+import 'widgets/intro_overlay.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,9 +25,11 @@ class CatSpotterApp extends StatelessWidget {
       title: 'Cat Spotter',
       theme: AppTheme.lightTheme,
       navigatorKey: _navigatorKey,
-      builder: (context, child) => AchievementListener(
-        navigatorKey: _navigatorKey,
-        child: child!,
+      builder: (context, child) => IntroOverlay(
+        child: AchievementListener(
+          navigatorKey: _navigatorKey,
+          child: child!,
+        ),
       ),
       home: const HomeScreen(),
       debugShowCheckedModeBanner: false,

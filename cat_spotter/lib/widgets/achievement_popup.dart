@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/theme.dart';
 import '../models/achievement.dart';
 import '../providers/achievements_provider.dart';
+import '../providers/app_providers.dart';
 
 /// Wraps the app and pops up an info box whenever achievements unlock.
 /// Sits above the Navigator (via MaterialApp.builder), so dialogs are shown
@@ -36,11 +37,16 @@ class _AchievementListenerState extends ConsumerState<AchievementListener> {
       // wizard) settle before the popup appears.
       Future.delayed(const Duration(milliseconds: 450), _showNext);
     });
+    // Popups queued during the launch intro are shown once it ends.
+    ref.listen<bool>(introFinishedProvider, (_, done) {
+      if (done) _showNext();
+    });
     return widget.child;
   }
 
   Future<void> _showNext() async {
     if (_showing || _queue.isEmpty) return;
+    if (!ref.read(introFinishedProvider)) return;
     final ctx = widget.navigatorKey.currentContext;
     if (ctx == null) return;
 
