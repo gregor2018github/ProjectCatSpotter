@@ -11,6 +11,14 @@ A Flutter Android app for spotting and tracking cats by location. Photograph cat
 - Fully offline — OpenStreetMap tiles (internet needed for tile loading, no API key required)
 - Local SQLite storage — no account or cloud service needed
 
+## Install on your phone
+
+1. On your Android phone, open the [latest release](https://github.com/gregor2018github/ProjectCatSpotter/releases/latest) and download `cat-spotter-X.Y.Z.apk`.
+2. Open the downloaded file. Android asks for permission to **install unknown apps** from your browser or file manager. Tap **Settings**, turn on **Allow from this source**, then go back.
+3. Tap **Install**. If Play Protect warns about an unknown app, choose **Install anyway**.
+
+To update, install the newer APK the same way. Your cats and sightings are kept. Don't uninstall the app first, because that deletes your data.
+
 ## Tech Stack
 
 | Layer | Library |
@@ -82,6 +90,8 @@ For a release APK:
 flutter build apk --release
 # Output: build/app/outputs/flutter-apk/app-release.apk
 ```
+
+See [RELEASING.md](RELEASING.md) for signing and publishing releases.
 
 ## Required Android Permissions
 

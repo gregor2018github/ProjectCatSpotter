@@ -26,6 +26,7 @@ cat_spotter/android/local.properties
 *.jks
 *.keystore
 key.properties
+keystore.properties
 
 # ─── IDE / Editor ────────────────────────────────────────────────
 .idea/

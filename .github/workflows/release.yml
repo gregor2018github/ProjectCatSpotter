@@ -1,0 +1,67 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: cat_spotter
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: "3.41.2"
+          cache: true
+
+      - name: Derive version from tag
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          if ! [[ "$VERSION" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+            echo "Tag must look like vX.Y.Z (got $GITHUB_REF_NAME)"; exit 1
+          fi
+          # v1.2.3 -> 10203; monotonic as long as minor/patch stay below 100.
+          CODE=$(( BASH_REMATCH[1] * 10000 + BASH_REMATCH[2] * 100 + BASH_REMATCH[3] ))
+          echo "VERSION_NAME=$VERSION" >> "$GITHUB_ENV"
+          echo "VERSION_CODE=$CODE" >> "$GITHUB_ENV"
+          echo "Version $VERSION ($CODE)"
+
+      - run: flutter pub get
+
+      # flutter build apk runs ./gradlew assembleRelease under the hood
+      # (and also generates the local.properties Gradle needs).
+      - name: Build signed release APK
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: flutter build apk --release --build-name="$VERSION_NAME" --build-number="$VERSION_CODE"
+
+      - name: Verify signature
+        run: |
+          APKSIGNER=$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)apksigner
+          "$APKSIGNER" verify --verbose --print-certs build/app/outputs/flutter-apk/app-release.apk
+          mv build/app/outputs/flutter-apk/app-release.apk "cat-spotter-$VERSION_NAME.apk"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" "cat-spotter-$VERSION_NAME.apk" \
+            --title "Cat Spotter $VERSION_NAME" \
+            --generate-notes
